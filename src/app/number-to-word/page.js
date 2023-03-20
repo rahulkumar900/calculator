@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import numWords from "../../../lib/numtoword";
+import { GWF, IWF } from "../../../lib/nw";
 export default function numberToWord() {
   const initialState = {
     local: "",
@@ -14,6 +14,7 @@ export default function numberToWord() {
   const [copied, setCopied] = useState(false);
   const [word, setWord] = useState(initialState);
 
+
   const handleChange = useCallback((e) => {
     setValue(Number(e.target.value));
     setCopied(false);
@@ -24,8 +25,9 @@ export default function numberToWord() {
     }, []);
 
   const convert = () => {
-    let word = numWords(value);
-    setWord({ ...initialState, local: word[0], Inter: word[1] });
+    let Gword = GWF(value);
+    let Iword = IWF(value);
+    setWord({ ...initialState, local: Iword, Inter: Gword });
   };
 
   return (
