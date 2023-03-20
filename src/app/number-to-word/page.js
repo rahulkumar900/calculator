@@ -2,38 +2,73 @@
 
 import React, { useCallback, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+<<<<<<< HEAD
 import { GWF, IWF } from "../../../lib/nw";
+=======
+import numWords from "../../../lib/numtoword";
+
+function toSentenceCase(text){
+  console.log(text)
+ return text.replace(text[0],text[0].toUpperCase())
+}
+
+
+
+
+>>>>>>> c75a28b6a6aecc80f918d87447a99ab99e66392f
 export default function numberToWord() {
+
   const initialState = {
     local: "",
-    localCopy: false,
     Inter: "",
-    InterCopy: false,
   };
+
+  const initialCopy = {
+    InterCopy: false,
+    localCopy: false,
+  };
+
   const [value, setValue] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [er,setError] = useState(false)
+  const [copy, setCopied] = useState(initialCopy);
   const [word, setWord] = useState(initialState);
 
+<<<<<<< HEAD
+=======
+console.log(er);
+>>>>>>> c75a28b6a6aecc80f918d87447a99ab99e66392f
 
   const handleChange = useCallback((e) => {
+    const inV = e.target.value;
+    if(inV != "" && isNaN(Number(inV))){
+      setError(true);
+    }else{
+      setError(false)
+    }
+    
     setValue(Number(e.target.value));
     setCopied(false);
   }, []);
-  const handleCopy = (n) =>
-    useCallback(() => {
-      setCopied({ ...initialState, [n]: true });
-    }, []);
+
+  const handleCopy = (n) => {
+    setCopied({ ...initialCopy, [n]: true });
+  };
 
   const convert = () => {
+<<<<<<< HEAD
     let Gword = GWF(value);
     let Iword = IWF(value);
     setWord({ ...initialState, local: Iword, Inter: Gword });
+=======
+    let word = numWords(value);
+    setWord({ ...initialState, local: toSentenceCase( word[0]), Inter: toSentenceCase( word[1]) });
+>>>>>>> c75a28b6a6aecc80f918d87447a99ab99e66392f
   };
 
   return (
     <div className=" mx-auto max-w-5xl  ">
-      <h1 className="text-4xl font-bold text-indigo-800">
-        Conver Number to word
+      <h1 className="px-8 text-4xl text-center mb-14 font-extrabold text-indigo-800">
+        Convert Number To Word
       </h1>
       <div className=" p-8 max-w-2xl bg-indigo-500">
         <div className="space-y-4">
@@ -42,24 +77,24 @@ export default function numberToWord() {
               onChange={handleChange}
               className={`  ${
                 value != "" && isNaN(value) ? `border-red-600 text-red-700` : ``
-              } border  p-2 outline-none `}
-              // className={true ? 'border-red-600':"" + "border  p-2 outline-none"}
+              } border font-semibold  p-2 outline-none `}
               placeholder="Enter Number"
               type="text"
             />
             <button
               onClick={convert}
+              disabled={er}
               className="bg-indigo-700 px-3 py-2 text-indigo-50"
             >
-              {value != "" && isNaN(value) ? "only Number 👿" : "Convert"}
+              {er ? "only Number 👿" : "Convert"}
             </button>
           </div>
 
           <div className="space-y-4">
-            <p className="text-indigo-50">In Word ( Internatioal Format )</p>
+            <p className="text-indigo-50 ">In Word ( Internatioal Format )</p>
             <textarea
               readOnly
-              className="w-full h-16 p-2"
+              className="w-full h-16 p-2 font-semibold"
               value={word.local}
             ></textarea>
             <div className="inline-flex gap-2">
@@ -74,13 +109,13 @@ export default function numberToWord() {
               </button>
               <CopyToClipboard
                 className={`${
-                  copied ? `bg-green-600` : ""
-                } text-indigo-50 bg-indigo-700 px-3 py-2`}
-                onCopy={handleCopy("localCopy")}
+                  copy.localCopy ? `bg-green-600 rounded-md` : `bg-indigo-700`
+                } text-indigo-50  px-3 py-2`}
+                onCopy={() => handleCopy("localCopy")}
                 text={word.local}
               >
                 <button className="">
-                  {copied ? "Copied👍" : "Copy to clipboard"}
+                  {copy.localCopy ? "Copied" : "Copy to clipboard"}
                 </button>
               </CopyToClipboard>
             </div>
@@ -90,7 +125,7 @@ export default function numberToWord() {
             <p className="text-indigo-50">In Word ( Internatioal Format )</p>
             <textarea
               readOnly
-              className="w-full h-16 p-2"
+              className="w-full h-16 p-2 text-indigo-900 font-semibold"
               value={word.Inter}
             ></textarea>
             <div className="inline-flex gap-2">
@@ -105,13 +140,13 @@ export default function numberToWord() {
               </button>
               <CopyToClipboard
                 className={`${
-                  copied ? `bg-green-600` : ""
-                } text-indigo-50 bg-indigo-700 px-3 py-2`}
-                onCopy={handleCopy("InterCopy")}
-                text={word.local}
+                  copy.InterCopy ? `bg-green-600 rounded-sm` : `bg-indigo-700`
+                } text-indigo-50  px-3 py-2`}
+                onCopy={() => handleCopy("InterCopy")}
+                text={word.Inter}
               >
                 <button className="">
-                  {copied ? "Copied👍" : "Copy to clipboard"}
+                  {copy.InterCopy ? "Copied" : "Copy to clipboard"}
                 </button>
               </CopyToClipboard>
             </div>
