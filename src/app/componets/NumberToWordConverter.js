@@ -19,54 +19,89 @@ export default function numberToWord() {
     localCopy: false,
   };
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [value, setValue] = useState("");
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [er, setError] = useState(false);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [copy, setCopied] = useState(initialCopy);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [word, setWord] = useState(initialState);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [format, setFormat] = useState("word");
 
-  console.log(er);
 
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
   const handleChange = useCallback((e) => {
-    const inV = e.target.value;
+    let inV = e.target.value;
     if (inV != "" && isNaN(Number(inV))) {
       setError(true);
     } else {
       setError(false);
     }
 
-    setValue(Number(e.target.value));
+    setValue(Number(inV));
     setCopied(false);
-  }, []);
+  });
 
   const handleCopy = (n) => {
     setCopied({ ...initialCopy, [n]: true });
   };
+  const handleFormate = (e) => {
+    setFormat(e.target.value);
+  };
 
   const convert = () => {
-    let Gword = GWF(value);
-    let Iword = IWF(value);
+    let Gword = GWF(value,format);
+    let Iword = IWF(value,format);
     setWord({ ...initialState, local: Iword, Inter: Gword });
   };
 
   return (
     <div className="flex gap-8 justify-between  flex-row ">
       <div className=" md:w-1/2 flex-auto space-y-4 p-7 border-2 border-indigo-600 bg-indigo-100 rounded-md">
-        <div className=" flex justify-left">
-          <input
-            onChange={handleChange}
-            className={`  ${
-              value != "" && isNaN(value) ? `border-red-600 text-red-700` : ``
-            } border-2 font-semibold  p-2 outline-none border-indigo-600 rounded-l-md`}
-            placeholder="Enter Number"
-            type="text"
-          />
-          <button
-            onClick={convert}
-            disabled={er}
-            className="bg-indigo-700 px-3 py-2 text-indigo-50"
-          >
-            {er ? "only Number 👿" : "Convert"}
-          </button>
+        <div className="space-y-2">
+          <div className=" flex justify-left">
+            <input
+              onChange={handleChange}
+              className={`${
+                value != "" && isNaN(value) ? `border-red-600 text-red-700` : ``
+              } border-2 font-semibold  p-2 outline-none border-indigo-600 rounded-l-md`}
+              placeholder="Enter Number"
+              type="text"
+            />
+            <button
+              onClick={convert}
+              disabled={er}
+              className="bg-indigo-700 px-3 py-2 rounded-r-md text-indigo-50"
+            >
+              {er ? "only Number 👿" : "Convert"}
+            </button>
+          </div>
+          <div className="word-formate-selector space-x-2">
+            <label htmlFor="word">Word</label>
+            <input
+              onChange={handleFormate}
+              id="word"
+              type="radio"
+              name="format"
+              value="word"
+              checked={format === "word"}
+            />
+
+            <label htmlFor="currency"> Currency</label>
+            <input
+              onChange={handleFormate}
+              id="currency"
+              type="radio"
+              name="format"
+              value="currency"
+              checked={format === "currency"}
+            />
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -93,7 +128,7 @@ export default function numberToWord() {
           </div>
         </div>
         <div className="space-y-2">
-          <label className=" ">Word In Internatioal Format </label>
+          <label className=" ">Word In Indian Format </label>
           <div>
             <TextareaAutosize
               className="w-full h-full px-3 py-1 border-2 border-indigo-600 rounded-md"
