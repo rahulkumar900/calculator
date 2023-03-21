@@ -10,17 +10,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ul className="flex gap-4 bg-indigo-900  p-6">
+        <ul className="flex gap-4  border-b  p-6 text-indigo-600 text-base font-semibold">
           <li>
-            <Link className="hover:text-indigo-200 text-indigo-50" href="/">
+            <Link className=" " href="/">
               Home
             </Link>
           </li>
           <li>
-            <Link
-              className="hover:text-indigo-200 text-indigo-50"
-              href="/number-to-word"
-            >
+            <Link className=" " href="/number-to-word">
               Numbertoword
             </Link>
           </li>

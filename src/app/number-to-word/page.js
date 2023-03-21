@@ -2,7 +2,7 @@ import React from "react";
 import NumberToWord from "../componets/NumberToWordConverter";
 export default function NmberToWord() {
   return (
-    <article className="prose lg:prose-xl">
+    <article className="prose  lg:prose-xl  max-w-none">
       <h1>Number to word converter</h1>
       <NumberToWord />
       <p>
