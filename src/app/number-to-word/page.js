@@ -1,6 +1,8 @@
 import React from "react";
 import NumberToWord from "../componets/NumberToWordConverter";
 export default function NmberToWord() {
+
+  console.log("change");
   return (
     <article className="mt-8 prose md:prose-lg lg:prose-xl  max-w-none">
       <h1>Number to word converter</h1>

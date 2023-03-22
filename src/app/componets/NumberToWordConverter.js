@@ -2,11 +2,9 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { GWF, IWF } from "../../../lib/nw";
+import {titleCase, sentenceCase} from "../../../lib/util";
 import TextareaAutosize from "react-textarea-autosize";
-function toSentenceCase(text) {
-  console.log(text);
-  return text.replace(text[0], text[0].toUpperCase());
-}
+
 
 export default function numberToWord() {
   const initialState = {
@@ -54,9 +52,16 @@ export default function numberToWord() {
     setFormat(e.target.value);
   };
 
+  const handleCase = (c) => {
+let t = titleCase(word.local);
+    setWord( {...word, local : t });
+    console.log(word.local)
+  }
+
   const convert = () => {
     let Gword = GWF(value,format);
     let Iword = IWF(value,format);
+    
     setWord({ ...initialState, local: Iword, Inter: Gword });
   };
 
@@ -136,6 +141,9 @@ export default function numberToWord() {
               value={word.local}
             />
             <div className="flex gap-2 justify-end">
+              <button onClick={() => handleCase("sentence")} className="bg-indigo-600 text-indigo-50 text-xs  px-3 py-2" >
+                Sentence case
+              </button>
               <CopyToClipboard
                 className={`${
                   copy.localCopy ? `bg-green-600 rounded-md` : `bg-indigo-600`
